@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estación Perdida - Parque Extremo</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: url('https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        .description {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .btn {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        nav {
+            background: #2c3e50;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background 0.3s ease;
+        }
+        nav.scrolled {
+            background: rgba(44, 62, 80, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #ff6b6b;
+            transition: width 0.3s ease;
+        }
+        nav ul li a:hover {
+            color: #ff6b6b;
+        }
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        section {
+            padding: 50px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background: #ff6b6b;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .activities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .activity {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .activity.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .activity:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .activity img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .activity:hover img {
+            transform: scale(1.05);
+        }
+        .activity-content {
+            padding: 20px;
+        }
+        .activity h3 {
+            margin-top: 0;
+            color: #ff6b6b;
+            transition: color 0.3s ease;
+        }
+        .activity:hover h3 {
+            color: #ff5252;
+        }
+        
+        /* Estilos para la tabla de horarios */
+        .schedule-container {
+            overflow-x: auto;
+        }
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .schedule-table:hover {
+            transform: scale(1.01);
+        }
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .schedule-table th {
+            background: #2c3e50;
+            color: white;
+        }
+        .schedule-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        /* Estilos para opciones de hospedaje */
+        .lodging-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .lodging-option {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .lodging-option:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .lodging-option img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .lodging-option:hover img {
+            transform: scale(1.05);
+        }
+        .lodging-content {
+            padding: 20px;
+        }
+        .lodging-option h3 {
+            margin-top: 0;
+            color: #ff6b6b;
+            transition: color 0.3s ease;
+        }
+        .lodging-option:hover h3 {
+            color: #ff5252;
+        }
+        .lodging-option p {
+            margin-bottom: 15px;
+        }
+        
+        /* Estilos para paquetes */
+        .packages {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .package-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        .package-header {
+            padding: 15px;
+            text-align: center;
+            color: white;
+        }
+        .hotel-real {
+            background: #3498db;
+        }
+        .hotel-rinconada {
+            background: #2ecc71;
+        }
+        .camping {
+            background: #f1c40f; /* Cambiado de rojo (#e74c3c) a amarillo (#f1c40f) */
+        }
+        .package-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .package-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+        .package-card p {
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        .package-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .package-features {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        .package-features li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .package-features li:last-child {
+            border-bottom: none;
+        }
+        .package-features li:before {
+            content: "✓";
+            color: #2ecc71;
+            margin-right: 8px;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .reservation-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .reservation-form:hover {
+            transform: translateY(-5px);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+            outline: none;
+        }
+        .form-group textarea {
+            height: 100px;
+        }
+        .form-group button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .form-group button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#actividades">Actividades</a></li>
+            <li><a href="#horario">Horario</a></li>
+            <li><a href="#hospedaje">Hospedaje</a></li>
+            <li><a href="#paquetes">Paquetes</a></li>
+            <li><a href="#reservas">Reservas</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <header id="inicio">
+        <div class="header-content">
+            <h1>Estación Perdida</h1>
+            <p class="description">
+                Vivirás una experiencia completa de aventura, contacto con la naturaleza y desconexión en nuestro parque extremo, donde cada rincón está diseñado para liberar tu espíritu aventurero.
+            </p>
+            <a href="#reservas" class="btn">Reserva Ahora</a>
+        </div>
+    </header>
+
+    <section id="actividades" class="container">
+        <h2 class="section-title">Nuestras Actividades</h2>
+        <div class="activities">
+            <div class="activity">
+                <img src="https://cdn1.yumping.com.mx/emp/fotos/301/P/067492/640/p-67492-portada-2_16100416313275.jpg" alt="Gotcha">
+                <div class="activity-content">
+                    <h3>Gotcha</h3>
+                    <p>Disfruta de emocionantes partidas de paintball en escenarios naturales, ideal para vivir la adrenalina en equipo.</p>
+                </div>
+            </div>
+            <div class="activity">
+                <img src="https://wildtreksadventures.com/wp-content/uploads/2025/04/rzr-tour-2.jpg" alt="RZR">
+                <div class="activity-content">
+                    <h3>RZR</h3>
+                    <p>Recorre senderos desafiantes a bordo de nuestros vehículos RZR, diseñados para la velocidad y la diversión extrema.</p>
+                </div>
+            </div>
+            <div class="activity">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/9e/82/70/caption.jpg?w=500&h=400&s=1" alt="Cuatrimotos">
+                <div class="activity-content">
+                    <h3>Cuatrimotos</h3>
+                    <p>Domina terrenos irregulares y siente la libertad de conducir cuatrimotos por paisajes espectaculares.</p>
+                </div>
+            </div>
+            <div class="activity">
+                <img src="https://ruta21.mx/uploads/0000/11/2023/02/23/rapel-40mts9.jpg" alt="Rapel">
+                <div class="activity-content">
+                    <h3>Rapel</h3>
+                    <p>Desciende por acantilados y cascadas con la seguridad de nuestros instructores certificados.</p>
+                </div>
+            </div>
+            <div class="activity">
+                <img src="https://www.dondeir.com/wp-content/uploads/2024/09/donde-ver-cine-al-aire-libre-en-cdmx-cineteca-casa-del-lago-y-mas.jpg" alt="Cine al aire libre">
+                <div class="activity-content">
+                    <h3>Cine al Aire Libre</h3>
+                    <p>Disfruta de películas bajo las estrellas, en un ambiente mágico y relajado.</p>
+                </div>
+            </div>
+            <div class="activity">
+                <img src="http://uninoticias.com.co/wp-content/uploads/2021/01/fogata.jpg" alt="Fogata">
+                <div class="activity-content">
+                    <h3>Fogata</h3>
+                    <p>Comparte historias y risas alrededor de una fogata, con música y un cielo estrellado.</p>
+                </div>
+            </div>
+            <div class="activity">
+                <img src="https://www.sierralagoresort.com/cms/resources/caminata-por-la-montana-sierra-lago-resort-mascota-jalisco-w850h480.webp" alt="Caminata">
+                <div class="activity-content">
+                    <h3>Caminata</h3>
+                    <p>Explora nuestros senderos naturales con guías expertos que te mostrarán los rincones más bellos del parque.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="horario" class="container">
+        <h2 class="section-title">Horario</h2>
+        <div class="schedule-container">
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Horario</th>
+                        <th>Actividad</th>
+                        <th>Lugar</th>
+                        <th>Recomendaciones</th>
+                        <th>Edad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>9:00 am</td>
+                        <td>Recepción</td>
+                        <td>Central de autobuses</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>9:00 am</td>
+                        <td>Check in</td>
+                        <td>Lobby del hotel</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>9:45 am - 11:30 am</td>
+                        <td>Desayuno</td>
+                        <td>Hotel y Parque</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>11:30 am - 1:00 pm</td>
+                        <td>Tiempo libre</td>
+                        <td>Parque</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1:00 pm - 2:45 pm</td>
+                        <td>Gotcha</td>
+                        <td>Parque</td>
+                        <td>Vestimenta apropiada para la actividad, tomando en cuenta que llega a dar mejor</td>
+                        <td>15 años en adelante</td>
+                    </tr>
+                    <tr>
+                        <td>2:45 pm - 4:00 pm</td>
+                        <td>Comida</td>
+                        <td>Parque</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>4:15 pm - 5:30 pm</td>
+                        <td>RZR</td>
+                        <td>Parque</td>
+                        <td>Vestimenta recomendada: manga larga y pantalón largo. Tela ligera y transpirable. Chamarra ligera o impermeable. Vestimenta y calzado ligero y adecuado. Vestimenta cómoda</td>
+                        <td>15 años en adelante</td>
+                    </tr>
+                    <tr>
+                        <td>5:50 pm - 6:45 pm</td>
+                        <td>Caminata</td>
+                        <td>Parque</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>7:00 pm - 7:45 pm</td>
+                        <td>Cine al aire libre</td>
+                        <td>Parque</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>7:45 pm - 9:30 pm</td>
+                        <td>Tiempo libre</td>
+                        <td>Parque</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>9:00 pm - 5:45 am</td>
+                        <td>Camping</td>
+                        <td>Parque</td>
+                        <td>Actividades: Té, Karaoke, Cuentos a la luz de las velas, Juegos de azar, etc.</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>6:45 am - 7:00 am</td>
+                        <td>Caminata</td>
+                        <td>Parque</td>
+                        <td>Vestimenta y calzado ligero y adecuado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>7:00 am - 7:30 am</td>
+                        <td>Lunch</td>
+                        <td>Parque</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>7:45 am - 9:45 am</td>
+                        <td>Rapel</td>
+                        <td>Parque</td>
+                        <td>Vestimenta adecuada: Pantalón largo y resistente. Camiseta manga larga. Sudadero ligero o cortaviento. Tenis o botas de montaña</td>
+                        <td>+18</td>
+                    </tr>
+                    <tr>
+                        <td>10:00 am</td>
+                        <td>Desayuno</td>
+                        <td>Hotel y Parque</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>12:00 pm</td>
+                        <td>Check out</td>
+                        <td>Hotel y Parque</td>
+                        <td></td>
+                        <td></td>
+                    </tr>    
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="hospedaje" class="container">
+        <h2 class="section-title">Opciones de Hospedaje</h2>
+        <div class="lodging-options">
+            <div class="lodging-option">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2b/99/e0/db/caption.jpg?w=900&h=500&s=1" alt="Real de San José">
+                <div class="lodging-content">
+                    <h3>Real de San José</h3>
+                    <p>Disfruta de una estancia cómoda y lujosa en nuestro hotel principal, con todas las comodidades para que tu experiencia sea inolvidable.</p>
+                </div>
+            </div>
+            <div class="lodging-option">
+                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/404087560.jpg?k=063e11b2f32084d873d22d7cb68a82c175113e9a4556c6a29d00f24607df6195&o=&hp=1" alt="La Rinconada">
+                <div class="lodging-content">
+                    <h3>La Rinconada</h3>
+                    <p>Un hotel acogedor con un ambiente familiar y todas las comodidades necesarias para disfrutar de tu aventura al máximo.</p>
+                </div>
+            </div>
+            <div class="lodging-option">
+                <img src="https://cdn1.yumping.com.mx/emp/fotos/301/P/040136/640/p-40136-camping-de-2-dias_16207472352387.jpg" alt="Camping">
+                <div class="lodging-content">
+                    <h3>Camping</h3>
+                    <p>Vive la experiencia completa de la naturaleza con nuestro camping equipado, perfecto para los amantes de la aventura y el aire libre.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="paquetes" class="container">
+        <h2 class="section-title">Paquetes de Servicios</h2>
+        <div class="packages">
+            <!-- Hotel Real de San José -->
+            <div class="package-card">
+                <div class="package-header hotel-real">
+                    <h3>Hotel Real de San José</h3>
+                    <p>SGL (1 persona)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$5,826.25 MXN</div>
+                    <ul class="package-features">
+                        <li>Habitación individual</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="package-header hotel-real">
+                    <h3>Hotel Real de San José</h3>
+                    <p>DBL (2 personas)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$11,652.50 MXN</div>
+                    <ul class="package-features">
+                        <li>Habitación doble</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="package-header hotel-real">
+                    <h3>Hotel Real de San José</h3>
+                    <p>TPL (3 personas)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$20,045.13 MXN</div>
+                    <ul class="package-features">
+                        <li>Habitación triple</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="package-header hotel-real">
+                    <h3>Hotel Real de San José</h3>
+                    <p>QPL (4 personas)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$26,727.50 MXN</div>
+                    <ul class="package-features">
+                        <li>Habitación cuádruple</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Hotel La Rinconada -->
+            <div class="package-card">
+                <div class="package-header hotel-rinconada">
+                    <h3>Hotel La Rinconada</h3>
+                    <p>SGL (1 persona)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$4,931.25 MXN</div>
+                    <ul class="package-features">
+                        <li>Habitación individual</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="package-header hotel-rinconada">
+                    <h3>Hotel La Rinconada</h3>
+                    <p>DBL (2 personas)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$9,862.50 MXN</div>
+                    <ul class="package-features">
+                        <li>Habitación doble</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="package-header hotel-rinconada">
+                    <h3>Hotel La Rinconada</h3>
+                    <p>TPL (3 personas)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$15,478.13 MXN</div>
+                    <ul class="package-features">
+                        <li>Habitación triple</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="package-header hotel-rinconada">
+                    <h3>Hotel La Rinconada</h3>
+                    <p>QPL (4 personas)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$20,637.50 MXN</div>
+                    <ul class="package-features">
+                        <li>Habitación cuádruple</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Camping -->
+            <div class="package-card">
+                <div class="package-header camping">
+                    <h3>Camping</h3>
+                    <p>SGL (1 persona)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$3,406.25 MXN</div>
+                    <ul class="package-features">
+                        <li>Casa de campaña individual</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="package-header camping">
+                    <h3>Camping</h3>
+                    <p>DBL (2 personas)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$6,812.50 MXN</div>
+                    <ul class="package-features">
+                        <li>Casa de campaña doble</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="package-header camping">
+                    <h3>Camping</h3>
+                    <p>TPL (3 personas)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$9,563.13 MXN</div>
+                    <ul class="package-features">
+                        <li>Casa de campaña triple</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="package-card">
+                <div class="package-header camping">
+                    <h3>Camping</h3>
+                    <p>QPL (4 personas)</p>
+                </div>
+                <div class="package-content">
+                    <div class="package-price">$12,737.50 MXN</div>
+                    <ul class="package-features">
+                        <li>Casa de campaña cuádruple</li>
+                        <li>Transporte incluido</li>
+                        <li>Día 1 incluye desayuno y comida</li>
+                        <li>Día 2 incluye un desayuno</li>
+                        <li>Servicios complementarios</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reservas" class="container">
+        <h2 class="section-title">Reserva Tu Paquete</h2>
+        <form class="reservation-form">
+            <div class="form-group">
+                <label for="nombre">Nombre Completo</label>
+                <input type="text" id="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo Electrónico</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" required>
+            </div>
+            <div class="form-group">
+                <label for="paquete">Selecciona tu Paquete</label>
+                <select id="paquete" required>
+                    <option value="">Selecciona un paquete</option>
+                    <optgroup label="Hotel Real de San José">
+                        <option value="real_sgl">SGL (1 persona) - $5,826.25 MXN</option>
+                        <option value="real_dbl">DBL (2 personas) - $11,652.50 MXN</option>
+                        <option value="real_tpl">TPL (3 personas) - $20,045.13 MXN</option>
+                        <option value="real_qpl">QPL (4 personas) - $26,727.50 MXN</option>
+                    </optgroup>
+                    <optgroup label="Hotel La Rinconada">
+                        <option value="rinconada_sgl">SGL (1 persona) - $4,931.25 MXN</option>
+                        <option value="rinconada_dbl">DBL (2 personas) - $9,862.50 MXN</option>
+                        <option value="rinconada_tpl">TPL (3 personas) - $15,478.13 MXN</option>
+                        <option value="rinconada_qpl">QPL (4 personas) - $20,637.50 MXN</option>
+                    </optgroup>
+                    <optgroup label="Camping">
+                        <option value="camping_sgl">SGL (1 persona) - $3,406.25 MXN</option>
+                        <option value="camping_dbl">DBL (2 personas) - $6,812.50 MXN</option>
+                        <option value="camping_tpl">TPL (3 personas) - $9,563.13 MXN</option>
+                        <option value="camping_qpl">QPL (4 personas) - $12,737.50 MXN</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fecha">Fecha de Reserva</label>
+                <input type="date" id="fecha" required>
+            </div>
+            <div class="form-group">
+                <label for="comentarios">Comentarios Adicionales</label>
+                <textarea id="comentarios"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit">Enviar Reserva</button>
+            </div>
+        </form>
+    </section>
+
+    <footer id="contacto">
+        <p>&copy; 2025 Estación Perdida - Parque Extremo. Todos los derechos reservados.</p>
+        <p>Ubicación: Estación Bernal, Tequisquiapan, Qro.</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling para navegación
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 50,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Animación de entrada para secciones
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animar elementos dentro de la sección
+                    if (entry.target.id === 'actividades') {
+                        const activities = entry.target.querySelectorAll('.activity');
+                        activities.forEach((activity, index) => {
+                            setTimeout(() => {
+                                activity.classList.add('visible');
+                            }, index * 100);
+                        });
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observar todas las secciones
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Efecto de scroll en navbar
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
