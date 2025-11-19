@@ -644,7 +644,7 @@
                     <p>SGL (1 persona)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$5,826.25 MXN</div>
+                    <div class="package-price">$5,825 MXN</div>
                     <ul class="package-features">
                         <li>Habitación individual</li>
                         <li>Transporte incluido</li>
@@ -660,7 +660,7 @@
                     <p>DBL (2 personas)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$11,652.50 MXN</div>
+                    <div class="package-price">$11,650 MXN</div>
                     <ul class="package-features">
                         <li>Habitación doble</li>
                         <li>Transporte incluido</li>
@@ -676,7 +676,7 @@
                     <p>TPL (3 personas)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$20,045.13 MXN</div>
+                    <div class="package-price">$20,045 MXN</div>
                     <ul class="package-features">
                         <li>Habitación triple</li>
                         <li>Transporte incluido</li>
@@ -692,7 +692,7 @@
                     <p>QPL (4 personas)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$26,727.50 MXN</div>
+                    <div class="package-price">$26,730 MXN</div>
                     <ul class="package-features">
                         <li>Habitación cuádruple</li>
                         <li>Transporte incluido</li>
@@ -710,7 +710,7 @@
                     <p>SGL (1 persona)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$4,931.25 MXN</div>
+                    <div class="package-price">$4,930 MXN</div>
                     <ul class="package-features">
                         <li>Habitación individual</li>
                         <li>Transporte incluido</li>
@@ -726,7 +726,7 @@
                     <p>DBL (2 personas)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$9,862.50 MXN</div>
+                    <div class="package-price">$9,865 MXN</div>
                     <ul class="package-features">
                         <li>Habitación doble</li>
                         <li>Transporte incluido</li>
@@ -742,7 +742,7 @@
                     <p>TPL (3 personas)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$15,478.13 MXN</div>
+                    <div class="package-price">$15,480 MXN</div>
                     <ul class="package-features">
                         <li>Habitación triple</li>
                         <li>Transporte incluido</li>
@@ -758,7 +758,7 @@
                     <p>QPL (4 personas)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$20,637.50 MXN</div>
+                    <div class="package-price">$20,640 MXN</div>
                     <ul class="package-features">
                         <li>Habitación cuádruple</li>
                         <li>Transporte incluido</li>
@@ -776,7 +776,7 @@
                     <p>SGL (1 persona)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$3,406.25 MXN</div>
+                    <div class="package-price">$3,405 MXN</div>
                     <ul class="package-features">
                         <li>Casa de campaña individual</li>
                         <li>Transporte incluido</li>
@@ -792,7 +792,7 @@
                     <p>DBL (2 personas)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$6,812.50 MXN</div>
+                    <div class="package-price">$6,815 MXN</div>
                     <ul class="package-features">
                         <li>Casa de campaña doble</li>
                         <li>Transporte incluido</li>
@@ -808,7 +808,7 @@
                     <p>TPL (3 personas)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$9,563.13 MXN</div>
+                    <div class="package-price">$9,565 MXN</div>
                     <ul class="package-features">
                         <li>Casa de campaña triple</li>
                         <li>Transporte incluido</li>
@@ -824,7 +824,7 @@
                     <p>QPL (4 personas)</p>
                 </div>
                 <div class="package-content">
-                    <div class="package-price">$12,737.50 MXN</div>
+                    <div class="package-price">$12,740 MXN</div>
                     <ul class="package-features">
                         <li>Casa de campaña cuádruple</li>
                         <li>Transporte incluido</li>
@@ -857,22 +857,22 @@
                 <select id="paquete" required>
                     <option value="">Selecciona un paquete</option>
                     <optgroup label="Hotel Real de San José">
-                        <option value="real_sgl">SGL (1 persona) - $5,826.25 MXN</option>
-                        <option value="real_dbl">DBL (2 personas) - $11,652.50 MXN</option>
-                        <option value="real_tpl">TPL (3 personas) - $20,045.13 MXN</option>
-                        <option value="real_qpl">QPL (4 personas) - $26,727.50 MXN</option>
+                        <option value="real_sgl">SGL (1 persona) - $5,825 MXN</option>
+                        <option value="real_dbl">DBL (2 personas) - $11,650 MXN</option>
+                        <option value="real_tpl">TPL (3 personas) - $20,045 MXN</option>
+                        <option value="real_qpl">QPL (4 personas) - $26,730 MXN</option>
                     </optgroup>
                     <optgroup label="Hotel La Rinconada">
-                        <option value="rinconada_sgl">SGL (1 persona) - $4,931.25 MXN</option>
-                        <option value="rinconada_dbl">DBL (2 personas) - $9,862.50 MXN</option>
-                        <option value="rinconada_tpl">TPL (3 personas) - $15,478.13 MXN</option>
-                        <option value="rinconada_qpl">QPL (4 personas) - $20,637.50 MXN</option>
+                        <option value="rinconada_sgl">SGL (1 persona) - $4,930 MXN</option>
+                        <option value="rinconada_dbl">DBL (2 personas) - $9,865 MXN</option>
+                        <option value="rinconada_tpl">TPL (3 personas) - $15,480 MXN</option>
+                        <option value="rinconada_qpl">QPL (4 personas) - $20,640 MXN</option>
                     </optgroup>
                     <optgroup label="Camping">
-                        <option value="camping_sgl">SGL (1 persona) - $3,406.25 MXN</option>
-                        <option value="camping_dbl">DBL (2 personas) - $6,812.50 MXN</option>
-                        <option value="camping_tpl">TPL (3 personas) - $9,563.13 MXN</option>
-                        <option value="camping_qpl">QPL (4 personas) - $12,737.50 MXN</option>
+                        <option value="camping_sgl">SGL (1 persona) - $3,405 MXN</option>
+                        <option value="camping_dbl">DBL (2 personas) - $6,815 MXN</option>
+                        <option value="camping_tpl">TPL (3 personas) - $9,565 MXN</option>
+                        <option value="camping_qpl">QPL (4 personas) - $12,740 MXN</option>
                     </optgroup>
                 </select>
             </div>
